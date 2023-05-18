@@ -28,11 +28,13 @@ def main():
     print("Average Response Time:", avg_response_time)
     print("Total Bytes Sent:", bytes_sent)
 
+    # Create histogram for response times
     plt.hist(response_times, bins=15)
     plt.xlabel('Response Time')
     plt.ylabel('Count')
     plt.title('Distribution of Response Times')
-    plt.savefig('plot.png')
+    plt.tight_layout()
+    plt.savefig('response_times_plot.png')
     plt.close()
 
 if __name__ == "__main__":
