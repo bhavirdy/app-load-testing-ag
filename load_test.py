@@ -18,7 +18,7 @@ def perform_load_testing(url, num_requests):
 
 def main():
     # url = input("Enter the URL to test: ")
-    url = "https://en.wikipedia.org/wiki/Fortnite_Battle_Royale"
+    url = "https://httpbin.org/get"
     num_requests = int(input("Enter the number of requests: "))
 
     response_times, bytes_sent = perform_load_testing(url, num_requests)
@@ -33,7 +33,6 @@ def main():
     plt.xlabel('Response Time')
     plt.ylabel('Count')
     plt.title('Distribution of Response Times')
-    plt.tight_layout()
     plt.savefig('response_times_plot.png')
     plt.close()
 
