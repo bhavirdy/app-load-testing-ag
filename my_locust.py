@@ -1,43 +1,37 @@
-from locust import HttpUser, task, between, events
+import gevent
+from locust import HttpUser, task, events
+from locust.env import Environment
+from locust.stats import stats_printer, stats_history
+from locust.log import setup_logging
+
+setup_logging("INFO", None)
+
 
 class MyUser(HttpUser):
-    wait_time = between(1, 3)
+    host = "https://docs.locust.io"
 
     @task
-    def my_task(self):
-        response = self.client.get("/your-endpoint")
-        # Process the response if needed
+    def t(self):
+        self.client.get("/")
 
-    def on_start(self):
-        pass
+# setup Environment and Runner
+env = Environment(user_classes=[MyUser], events=events)
+runner = env.create_local_runner()
 
-# Event listener to print statistics
-@events.test_stop.add_listener
-def print_stats(environment, **kwargs):
-    # Total requests
-    total_requests = environment.stats.total_requests
-    print(f"Total requests: {total_requests}")
+# execute init event handlers (only really needed if you have registered any)
+env.events.init.fire(environment=env, runner=runner)
 
-    # Total failures
-    total_failures = environment.stats.total_failures
-    print(f"Total failures: {total_failures}")
+# start a greenlet that periodically outputs the current stats
+gevent.spawn(stats_printer(env.stats))
 
-    # Total average response time
-    total_avg_response_time = environment.stats.total_average_response_time
-    print(f"Total average response time: {total_avg_response_time:.2f} ms")
+# start a greenlet that save current stats to history
+gevent.spawn(stats_history, env.runner)
 
-    # Total content length
-    total_content_length = environment.stats.total_content_length
-    print(f"Total content length: {total_content_length} bytes")
+# start the test
+runner.start(1, spawn_rate=10)
 
-    # Requests per second
-    requests_per_second = total_requests / environment.stats.total_run_time
-    print(f"Requests per second: {requests_per_second:.2f}")
+# in 60 seconds stop the runner
+gevent.spawn_later(5, lambda: runner.quit())
 
-    # Response time percentiles
-    response_time_percentiles = environment.stats.get_response_time_percentile(95)
-    print(f"95th percentile response time: {response_time_percentiles:.2f} ms")
-
-# Run the load test
-if __name__ == "__main__":
-    MyUser().run()
+# wait for the greenlets
+runner.greenlet.join()
