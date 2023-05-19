@@ -1,30 +1,53 @@
 import requests
 import time
+import random
 import matplotlib.pyplot as plt
 
-def perform_load_testing(url, num_requests):
-    response_times = []
-    bytes_sent = 0
+class User:
+    def __init__(self, user_id, url, num_requests):
+        self.user_id = user_id
+        self.url = url
+        self.num_requests = num_requests
 
-    for _ in range(num_requests):
-        start_time = time.time()
-        response = requests.get(url)
-        end_time = time.time()
+    def execute_requests(self):
+        response_times = []
+        bytes_sent = 0
 
-        response_times.append(end_time - start_time)
-        bytes_sent += len(response.content)
+        for _ in range(self.num_requests):
+            start_time = time.time()
+            response = requests.get(self.url)
+            end_time = time.time()
 
-    return response_times, bytes_sent
+            response_times.append(end_time - start_time)
+            bytes_sent += len(response.content)
+
+        return response_times, bytes_sent
+
+def perform_load_testing(users):
+    all_response_times = []
+    all_bytes_sent = []
+
+    for user in users:
+        response_times, bytes_sent = user.execute_requests()
+        all_response_times.extend(response_times)
+        all_bytes_sent.append(bytes_sent)
+
+    return all_response_times, sum(all_bytes_sent)
 
 def main():
-    # url = input("Enter the URL to test: ")
-    url = "https://httpbin.org/get"
-    num_requests = int(input("Enter the number of requests: "))
+    url = "https://www.youtube.com/watch?v=qriL9Qe8pJc"
+    num_users = int(input("Enter the number of users: "))
 
-    response_times, bytes_sent = perform_load_testing(url, num_requests)
+    users = []
+    for i in range(num_users):
+        user_id = i + 1
+        num_requests = random.randint(1, 10)
+        users.append(User(user_id, url, num_requests))
+
+    response_times, bytes_sent = perform_load_testing(users)
 
     # Display statistics
-    avg_response_time = sum(response_times) / num_requests
+    avg_response_time = sum(response_times) / len(response_times)
     print("Average Response Time:", avg_response_time)
     print("Total Bytes Sent:", bytes_sent)
 
