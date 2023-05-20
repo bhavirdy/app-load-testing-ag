@@ -4,6 +4,14 @@ Load Testing Script
 
 This script allows you to perform load testing on a web application by simulating multiple users making HTTP requests. It measures the response times and the amount of data sent for login, GET, and POST requests. Additionally, it generates histograms to visualize the distribution of response times for each type of request.
 
+A login request occurs once per user at the beginning of a user's requests. It passes text for a login form.
+
+POST requests post an jpg image. A random amount of POST requests are generated (in a range of 1, 5).
+
+A random amount of GET requests are generated (in a range of 1, 5).
+
+The program uses https://httpbin.org/ to execute these requests.
+
 # Prerequisites:
 
 Python 3.x
