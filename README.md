@@ -14,9 +14,9 @@ The program uses https://httpbin.org/ to execute these requests.
 
 # Prerequisites:
 
-Python 3.x
-requests library
-matplotlib library
+Python 3.x,
+requests library,
+matplotlib library,
 How to Use
 Install the required libraries by running the following command:
 
