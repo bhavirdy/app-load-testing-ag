@@ -6,9 +6,9 @@ This script allows you to perform load testing on a web application by simulatin
 
 A login request occurs once per user at the beginning of a user's requests. It passes text for a login form.
 
-POST requests post an jpg image. A random amount of POST requests are generated (in a range of 1, 5).
+POST requests post an jpg image. A random amount of POST requests are generated per user (in a range of 1, 5).
 
-A random amount of GET requests are generated (in a range of 1, 5).
+A random amount of GET requests are generated per user (in a range of 1, 5).
 
 The program uses https://httpbin.org/ to execute these requests.
 
