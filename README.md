@@ -16,8 +16,10 @@ The program uses https://httpbin.org/ to execute these requests.
 
 Python 3.x,
 requests library,
-matplotlib library,
-How to Use
+matplotlib library.
+
+# How to Use
+
 Install the required libraries by running the following command:
 
 ```pip install requests matplotlib```
