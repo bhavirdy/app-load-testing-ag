@@ -1,6 +1,6 @@
 # app-load-testing-ag
 
-Load Testing Script
+Allan Gray Coding Challenge: Load Testing Script
 
 This script allows you to perform load testing on a web application by simulating multiple users making HTTP requests. It measures the response times and the amount of data sent for login, GET, and POST requests. Additionally, it generates histograms to visualize the distribution of response times for each type of request.
 
